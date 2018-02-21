@@ -1,11 +1,12 @@
-import React from 'react'
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Navbar = () => (
-  <nav className="navbar">
+  <nav className='navbar'>
     <ul>
-      <li><a>Goals</a></li>
-      <li><a>Plans</a></li>
-      <li><a>Me</a></li>
+      <li><NavLink exact activeClassName='active' to='/'>Goals</NavLink></li>
+      <li><NavLink to='/plans' activeClassName='active'>Plans</NavLink></li>
+      <li><NavLink to='/me' activeClassName='active'>Me</NavLink></li>
     </ul>
   </nav>
 )

@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:3000/api/v1'
+//const API_URL = 'http://localhost:3000/api/v1'
+const API_URL = 'https://climbgg-api.herokuapp.com/api/v1'
 
 export function apiCall(method, path, options={}) {
   return fetch(`${API_URL}/${path}`, {
