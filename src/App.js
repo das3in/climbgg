@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import Navbar from './components/navbar';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+} from 'react-router-dom';
 import GoalsList from './components/GoalsList';
 import Plans from './Plans';
 import Me from './Me';
@@ -16,6 +20,8 @@ class App extends Component {
     this.state = {
       goals: []
     }
+
+    this.updateGoals = this.updateGoals.bind(this);
   }
 
   componentDidMount() {
@@ -24,6 +30,13 @@ class App extends Component {
     }).catch(err => {
       console.log(err.message)
     })
+  }
+
+  updateGoals(data) {
+    let oldGoals = this.state.goals;
+    oldGoals.unshift(data.goal);
+
+    this.setState({goals: oldGoals})
   }
 
   render() {
@@ -38,7 +51,11 @@ class App extends Component {
               <Route path='/' exact render={(props) => <GoalsList {...props} goals={goals} />} />
               <Route path='/plans' component={Plans} />
               <Route path='/me' component={Me} />
-              <Route path='/goals/new' component={NewGoal} />
+              <Route path='/goals/new'
+                render={(props) =>
+                  <NewGoal {...props} updateGoals={this.updateGoals} />
+                } 
+              />
               <Route render={() => <h1>Four oh Four.</h1>} />
             </Switch>
           </div>
