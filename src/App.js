@@ -5,12 +5,13 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+import Login from './components/Login';
+import PrivateRoute from './components/PrivateRoute';
 import GoalsList from './components/GoalsList';
 import Plans from './Plans';
 import Me from './Me';
-import NewGoal from './components/NewGoal';
 import LoadingSpinner from './components/loadingSpinner';
-import { apiCall } from './utils/api';
+//import { apiCall } from './utils/api';
 import './App.css';
 
 class App extends Component {
@@ -18,44 +19,28 @@ class App extends Component {
     super(props);
 
     this.state = {
-      goals: []
+      user: {
+        id: '',
+        summonerName: '',
+        token: '',
+      },
     }
-
-    this.updateGoals = this.updateGoals.bind(this);
-  }
-
-  componentDidMount() {
-    apiCall('get', 'goals').then(res => {
-      this.setState({goals: res.goals})
-    }).catch(err => {
-      console.log(err.message)
-    })
-  }
-
-  updateGoals(data) {
-    let oldGoals = this.state.goals;
-    oldGoals.unshift(data.goal);
-
-    this.setState({goals: oldGoals})
   }
 
   render() {
-    const { goals } = this.state;
+    const { user } = this.state;
+
     return (
       <Router>
         <div>
-          <Navbar />
-          {goals.length === 0 ? <LoadingSpinner /> : ''}
+          {user.token !== '' ? <Navbar /> : '' }
+          {user.token !== '' ? <LoadingSpinner /> : ''}
           <div className='container'>
             <Switch>
-              <Route path='/' exact render={(props) => <GoalsList {...props} goals={goals} />} />
-              <Route path='/plans' component={Plans} />
-              <Route path='/me' component={Me} />
-              <Route path='/goals/new'
-                render={(props) =>
-                  <NewGoal {...props} updateGoals={this.updateGoals} />
-                } 
-              />
+              <Route path='/login' component={Login} />
+              <PrivateRoute path='/' user={user}  exact component={GoalsList} />
+              <PrivateRoute path='/plans' user={user} component={Plans} />
+              <PrivateRoute path='/me' user={user}  component={Me} />
               <Route render={() => <h1>Four oh Four.</h1>} />
             </Switch>
           </div>
