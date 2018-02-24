@@ -47,7 +47,7 @@ class NewGoal extends Component {
         name: category
       }
     }
-    apiCall('post', 'goals', {data: data}).then(res => {
+    apiCall('post', 'goals', {data: data, token: this.props.user.token}).then(res => {
       this.props.history.push('/');
       this.props.updateGoals(res);
     })

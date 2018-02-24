@@ -6,6 +6,7 @@ export function apiCall(method, path, options={}) {
     method: method,
     headers: {
       Accept: 'application/json', 'Content-Type': 'application/json',
+      Authorization: `Bearer ${options.token}`
     },
     body: JSON.stringify(options.data)
   })

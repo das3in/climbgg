@@ -5,6 +5,7 @@ import GoalCard from './GoalCard';
 import NewGoal from './NewGoal';
 import NewGoalButton from './NewGoalButton';
 import PrivateRoute from './PrivateRoute';
+import LoadingSpinner from './loadingSpinner';
 
 class GoalsList extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class GoalsList extends Component {
   }
 
   componentDidMount() {
-    apiCall('get', 'goals').then(res => {
+    apiCall('get', 'goals', {token: this.props.user.token}).then(res => {
       this.setState({goals: res.goals, isLoading: false})
     }).catch(err => {
       console.log(err.message)
@@ -40,11 +41,16 @@ class GoalsList extends Component {
         <Link to='/goals/new'>
           <NewGoalButton />
         </Link>
-        <ul className='cards'>
-          {goals.map(goal => (
-            <GoalCard key={goal.id} goal={goal} />
-          ))}
-        </ul>
+        {goals.length === 0 ?
+            <LoadingSpinner />
+            :
+            <ul className='cards'>
+              {goals.map(goal => (
+                <GoalCard key={goal.id} goal={goal} />
+              ))}
+            </ul>
+        }
+        <PrivateRoute path='/goals/new' user={user} updateGoals={this.updateGoals} component={NewGoal} />
       </div>
     )
   }
