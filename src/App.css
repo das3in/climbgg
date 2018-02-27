@@ -187,6 +187,13 @@ li .active {
     padding: 5px;
   }
 
+  .modal-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+  }
+
   .close-modal {
     position: absolute;
     right: 10px;
